@@ -4,7 +4,7 @@ Donate link: http://www.mmilan.com/
 Tags: latest, post, category, front, page, archive, news
 Requires at least: 2.6
 Tested up to: 2.7.1
-Stable tag: 0.5.1
+Stable tag: 0.5.2
 
 Displays lists of posts from selected categories. You can select how many different lists you want, sort posts by date or random.
 
