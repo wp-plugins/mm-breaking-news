@@ -5,7 +5,7 @@ Plugin URI: http://www.mmilan.com/mm-breaking-news
 Description: Displays lists of posts from selected categories whereever you like. You can select how many different lists you want, sort posts by date or random, select which categories to include or exclude from specific list.
 Author: Milan Milosevic
 Author URI: http://www.mmilan.com/
-Version: 0.5
+Version: 0.5.1
 License: GPL v3 - http://www.gnu.org/licenses/
 
 Installation: You have to add <?php if (function_exists('mm_bnlist')) mm_bnlist() ?> to your theme file.
