@@ -31,7 +31,7 @@ Installation: You have to add <?php if (function_exists('mm_bnlist')) mm_bnlist(
 function mm_bnlist_css() {
 
 	$pluginURL = 'wp-content/plugins/';
-	$pluginName = 'mm-bnlist';
+	$pluginName = 'mm-breaking-news';
 	
 	$cssUrl = get_bloginfo('url')."/".$pluginURL.$pluginName.'/mm-bnlist.css';	
 	echo '<link rel="stylesheet" type="text/css" href="' . $cssUrl . '" />';
