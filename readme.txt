@@ -4,7 +4,7 @@ Donate link: http://www.mmilan.com/
 Tags: latest, post, category, front, page, archive, news
 Requires at least: 2.6
 Tested up to: 2.7.1
-Stable tag: 0.5
+Stable tag: 0.5.1
 
 Displays lists of posts from selected categories. You can select how many different lists you want, sort posts by date or random.
 
@@ -16,6 +16,13 @@ Your posts can be randomized or sord by date. With title you can chose to show d
 
 Lists can be show whereber you want - above or below posts, in archive, or on single post or page. Also, you can place it in sidebar. You can choose to show lists only on first page or not.
 
+Changelog:
+
+	2009-04-03 0.5.1 Milan Milosevic
+		Bugfix: problem with CSS file
+
+	2009-03-6 0.5  Milan Milosevic
+		First realase!
 
 == Installation ==
 
