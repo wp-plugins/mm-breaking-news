@@ -1,7 +1,11 @@
-2009-04-03 0.5.2 Milan Milosevic
+2010-01-13, ver 0.6, Milan Milosevic
+	Added shortcode [mm-breaking-news] for displaying a list in a page/post
 
+2009-12-25, ver 0.5.3, Milan Milosevic
+	Bugfix: Wordpress 2.9
+
+2009-04-03, ver 0.5.2, Milan Milosevic
 	Bugfix: problem with CSS file
 
-2009-03-6 0.5  Milan Milosevic
-
+2009-03-6, ver 0.5,  Milan Milosevic
 	Uploaded to Wordpress.org

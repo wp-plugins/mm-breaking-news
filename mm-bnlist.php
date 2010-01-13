@@ -5,7 +5,7 @@ Plugin URI: http://www.mmilan.com/mm-breaking-news
 Description: Displays lists of posts from selected categories whereever you like. You can select how many different lists you want, sort posts by date or random, select which categories to include or exclude from specific list.
 Author: Milan Milosevic
 Author URI: http://www.mmilan.com/
-Version: 0.5.3
+Version: 0.6
 License: GPL v3 - http://www.gnu.org/licenses/
 
 Installation: You have to add <?php if (function_exists('mm_bnlist')) mm_bnlist() ?> to your theme file.
@@ -72,7 +72,6 @@ function mm_bnlist () {
 		for ( $i = 0; $i < $opt_val['n']; $i+=1 ) {
 			echo "<b>".$opt_tmp['title'][$i]."</b>";
 			echo "<ul>";
-				global $post;
 				$catid = Array();
 				if (!empty($opt_tmp['in'][$i])) foreach ($opt_tmp['in'][$i] as $tmp) $catid[] = $tmp;
 				if (!empty($opt_tmp['out'][$i])) foreach ($opt_tmp['out'][$i] as $tmp) $catid[] = -$tmp;
@@ -81,17 +80,17 @@ function mm_bnlist () {
 				$num = $opt_tmp['num'][$i];
 				if ($show_rand[$i] == "YES") $myposts = get_posts("numberposts=$num&category=$catids&orderby=rand");
 					else $myposts = get_posts("numberposts=$num&category=$catids");
-				foreach($myposts as $post) :
-					setup_postdata($post);
+				foreach($myposts as $show_post) :
+					setup_postdata($show_post);
 					if ($show_date[$i] == "YES") $sh_date = the_date('M dS, Y', ' (', '', FALSE);
 						else $sh_date = '';
-					if ($show_comments[$i] == "YES") $no_com = "".$post->comment_count." comments)";
+					if ($show_comments[$i] == "YES") $no_com = "".$show_post->comment_count." comments)";
 						else $no_com = '';
 					if (($show_date[$i] == "YES") and ($show_comments[$i] == "YES")) $sep = "; ";
 						else if ($show_date[$i] == "YES") $sep = ")";
 							else $sep = " (";
 					if (($show_date[$i] != "YES") and ($show_comments[$i] != "YES")) $sep = "";
-					print "<li><a href=\"".get_permalink()."\">".$post->post_title."</a><span class=\"date_com\">".$sh_date.$sep.$no_com."</span></li>";
+					print "<li><a href=\"".get_permalink()."\">".$show_post->post_title."</a><span class=\"date_com\">".$sh_date.$sep.$no_com."</span></li>";
 				endforeach;
 			echo "</ul>";
 		}
@@ -101,6 +100,67 @@ function mm_bnlist () {
 		echo "</div>";
 	}
 }
+
+// Add shortcode
+function mm_bnlist_code ($attr) {
+
+	// Read in existing option value from database
+	$opt_name = array(
+		'n' =>'mm_bnlist_n',
+		'in' => 'mm_bnlist_in',
+		'out' => 'mm_bnlist_out',
+		'num' => 'mm_bnlist_num',
+		'title' => 'mm_bnlist_title',
+	);
+		
+	$opt_val = array(
+		'n' => get_option( $opt_name['n'] ),
+		'in' => get_option( $opt_name['in'] ),
+		'out' => get_option( $opt_name['out'] ),
+		'num' => get_option( $opt_name['num'] ),
+		'title' =>  get_option( $opt_name['title'] ),
+	);
+	if ($opt_val['n'] < 1) $opt_val['n'] = 1;
+
+	$opt_tmp['title'] = unserialize($opt_val['title']);
+	$opt_tmp['num'] = unserialize($opt_val['num']);
+	$opt_tmp['in'] = unserialize($opt_val['in']);
+	$opt_tmp['out'] = unserialize($opt_val['out']);
+	$show_comments = unserialize(get_option('mm_bnlist_comments'));
+	$show_date = unserialize(get_option('mm_bnlist_date'));
+	$show_rand = unserialize(get_option('mm_bnlist_rand'));
+
+	for ( $i = 0; $i < $opt_val['n']; $i+=1 ) {
+		echo "<h3>".$opt_tmp['title'][$i]."</h3>";
+		echo "<ul>";
+			$catid = Array();
+			if (!empty($opt_tmp['in'][$i])) foreach ($opt_tmp['in'][$i] as $tmp) $catid[] = $tmp;
+			if (!empty($opt_tmp['out'][$i])) foreach ($opt_tmp['out'][$i] as $tmp) $catid[] = -$tmp;
+			$catids = implode(',', $catid);
+
+			$num = $opt_tmp['num'][$i];
+			if ($show_rand[$i] == "YES") $myposts = get_posts("numberposts=$num&category=$catids&orderby=rand");
+				else $myposts = get_posts("numberposts=$num&category=$catids");
+			foreach($myposts as $show_post) :
+				setup_postdata($show_post);
+				if ($show_date[$i] == "YES") $sh_date = the_date('M dS, Y', ' (', '', FALSE);
+					else $sh_date = '';
+				if ($show_comments[$i] == "YES") $no_com = "".$show_post->comment_count." comments)";
+					else $no_com = '';
+				if (($show_date[$i] == "YES") and ($show_comments[$i] == "YES")) $sep = "; ";
+					else if ($show_date[$i] == "YES") $sep = ")";
+						else $sep = " (";
+				if (($show_date[$i] != "YES") and ($show_comments[$i] != "YES")) $sep = "";
+				print "<li><a href=\"".get_permalink()."\">".$show_post->post_title."</a><span class=\"date_com\">".$sh_date.$sep.$no_com."</span></li>";
+			endforeach;
+		echo "</ul>";
+	}
+
+	if (get_option('mm_bnlist_credits') != "NO")
+		echo "<p style=\"text-align: right; font-size: 0.7em \">Plugin by <a href=\"http://www.mmilan.com\">mmilan.com</a></p>";
+}
+
+add_shortcode('mm-breaking-news', 'mm_bnlist_code');
 
 // Admin menu
 

@@ -3,8 +3,8 @@ Contributors: mmilan81
 Donate link: http://www.mmilan.com/
 Tags: latest, post, category, front, page, archive, news
 Requires at least: 2.6
-Tested up to: 2.9
-Stable tag: 0.5.3
+Tested up to: 2.9.1
+Stable tag: 0.6
 
 Displays lists of posts from selected categories. You can select how many different lists you want, sort posts by date or random.
 
@@ -16,16 +16,22 @@ Your posts can be randomized or sord by date. With title you can chose to show d
 
 Lists can be show whereber you want - above or below posts, in archive, or on single post or page. Also, you can place it in sidebar. You can choose to show lists only on first page or not.
 
+If you want to show a list on one page (or post) you can use a shortcode [mm-breaking-news] when you write and the whole bullet list will be displayed.
+
 Changelog:
 
-	2009-12-25 0.5.3 Milan Milosevic
+	2010-01-13, ver 0.6, Milan Milosevic
+		Added shortcode [mm-breaking-news] for displaying a list in a page/post
+
+	2009-12-25, ver 0.5.3, Milan Milosevic
 		Bugfix: Wordpress 2.9
 
-	2009-04-03 0.5.1 Milan Milosevic
+	2009-04-03, ver 0.5.2, Milan Milosevic
 		Bugfix: problem with CSS file
 
-	2009-03-6 0.5  Milan Milosevic
-		First realase!
+	2009-03-6, ver 0.5,  Milan Milosevic
+		Uploaded to Wordpress.org
+
 
 == Installation ==
 
