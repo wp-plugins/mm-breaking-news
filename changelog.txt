@@ -1,3 +1,6 @@
+2010-01-13, ver 0.6.1, Milan Milosevic
+	Bugfix: problems with placement of shortcode content.
+
 2010-01-13, ver 0.6, Milan Milosevic
 	Added shortcode [mm-breaking-news] for displaying a list in a page/post
 

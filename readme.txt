@@ -4,7 +4,7 @@ Donate link: http://www.mmilan.com/
 Tags: latest, post, category, front, page, archive, news
 Requires at least: 2.6
 Tested up to: 2.9.1
-Stable tag: 0.6
+Stable tag: 0.6.1
 
 Displays lists of posts from selected categories. You can select how many different lists you want, sort posts by date or random.
 
@@ -20,6 +20,9 @@ If you want to show a list on one page (or post) you can use a shortcode [mm-bre
 
 Changelog:
 
+	2010-01-13, ver 0.6.1, Milan Milosevic
+		Bugfix: problems with placement of shortcode content.
+		
 	2010-01-13, ver 0.6, Milan Milosevic
 		Added shortcode [mm-breaking-news] for displaying a list in a page/post
 
