@@ -5,7 +5,7 @@ Plugin URI: http://www.mmilan.com/mm-breaking-news
 Description: Displays lists of posts from selected categories whereever you like. You can select how many different lists you want, sort posts by date or random, select which categories to include or exclude from specific list.
 Author: Milan Milosevic
 Author URI: http://www.mmilan.com/
-Version: 0.6
+Version: 0.6.1
 License: GPL v3 - http://www.gnu.org/licenses/
 
 Installation: You have to add <?php if (function_exists('mm_bnlist')) mm_bnlist() ?> to your theme file.
@@ -130,9 +130,11 @@ function mm_bnlist_code ($attr) {
 	$show_date = unserialize(get_option('mm_bnlist_date'));
 	$show_rand = unserialize(get_option('mm_bnlist_rand'));
 
+	$mm_echo = '';
+	
 	for ( $i = 0; $i < $opt_val['n']; $i+=1 ) {
-		echo "<h3>".$opt_tmp['title'][$i]."</h3>";
-		echo "<ul>";
+		$mm_echo .= "<h3>".$opt_tmp['title'][$i]."</h3>";
+		$mm_echo .= "<ul>";
 			$catid = Array();
 			if (!empty($opt_tmp['in'][$i])) foreach ($opt_tmp['in'][$i] as $tmp) $catid[] = $tmp;
 			if (!empty($opt_tmp['out'][$i])) foreach ($opt_tmp['out'][$i] as $tmp) $catid[] = -$tmp;
@@ -151,13 +153,15 @@ function mm_bnlist_code ($attr) {
 					else if ($show_date[$i] == "YES") $sep = ")";
 						else $sep = " (";
 				if (($show_date[$i] != "YES") and ($show_comments[$i] != "YES")) $sep = "";
-				print "<li><a href=\"".get_permalink()."\">".$show_post->post_title."</a><span class=\"date_com\">".$sh_date.$sep.$no_com."</span></li>";
+				$mm_echo .= "<li><a href=\"".get_permalink()."\">".$show_post->post_title."</a><span class=\"date_com\">".$sh_date.$sep.$no_com."</span></li>";
 			endforeach;
-		echo "</ul>";
+		$mm_echo .= "</ul>";
 	}
 
 	if (get_option('mm_bnlist_credits') != "NO")
-		echo "<p style=\"text-align: right; font-size: 0.7em \">Plugin by <a href=\"http://www.mmilan.com\">mmilan.com</a></p>";
+		$mm_echo .= "<p style=\"text-align: right; font-size: 0.7em \">Plugin by <a href=\"http://www.mmilan.com\">mmilan.com</a></p>";
+
+	return $mm_echo;
 }
 
 add_shortcode('mm-breaking-news', 'mm_bnlist_code');
