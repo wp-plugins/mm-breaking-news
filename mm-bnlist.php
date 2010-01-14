@@ -5,7 +5,7 @@ Plugin URI: http://www.mmilan.com/mm-breaking-news
 Description: Displays lists of posts from selected categories whereever you like. You can select how many different lists you want, sort posts by date or random, select which categories to include or exclude from specific list.
 Author: Milan Milosevic
 Author URI: http://www.mmilan.com/
-Version: 0.6.1
+Version: 0.6.2
 License: GPL v3 - http://www.gnu.org/licenses/
 
 Installation: You have to add <?php if (function_exists('mm_bnlist')) mm_bnlist() ?> to your theme file.
@@ -90,7 +90,7 @@ function mm_bnlist () {
 						else if ($show_date[$i] == "YES") $sep = ")";
 							else $sep = " (";
 					if (($show_date[$i] != "YES") and ($show_comments[$i] != "YES")) $sep = "";
-					print "<li><a href=\"".get_permalink()."\">".$show_post->post_title."</a><span class=\"date_com\">".$sh_date.$sep.$no_com."</span></li>";
+					print "<li><a href=\"".get_permalink($show_post->ID)."\">".$show_post->post_title."</a><span class=\"date_com\">".$sh_date.$sep.$no_com."</span></li>";
 				endforeach;
 			echo "</ul>";
 		}
@@ -153,7 +153,7 @@ function mm_bnlist_code ($attr) {
 					else if ($show_date[$i] == "YES") $sep = ")";
 						else $sep = " (";
 				if (($show_date[$i] != "YES") and ($show_comments[$i] != "YES")) $sep = "";
-				$mm_echo .= "<li><a href=\"".get_permalink()."\">".$show_post->post_title."</a><span class=\"date_com\">".$sh_date.$sep.$no_com."</span></li>";
+				$mm_echo .= "<li><a href=\"".get_permalink($show_post->ID)."\">".$show_post->post_title."</a><span class=\"date_com\">".$sh_date.$sep.$no_com."</span></li>";
 			endforeach;
 		$mm_echo .= "</ul>";
 	}
