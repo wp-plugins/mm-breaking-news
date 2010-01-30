@@ -4,7 +4,7 @@ Donate link: http://www.mmilan.com/
 Tags: latest, post, category, front, page, archive, news
 Requires at least: 2.6
 Tested up to: 2.9.1
-Stable tag: 0.6.2
+Stable tag: 0.6.3
 
 Displays lists of posts from selected categories. You can select how many different lists you want, sort posts by date or random.
 
@@ -20,22 +20,25 @@ If you want to show a list on one page (or post) you can use a shortcode [mm-bre
 
 Changelog:
 
-	2010-01-14, ver 0.6.2, Milan Milosevic
+	2010-01-30, ver 0.6.3
+		Bugfix: wrong post date
+		
+	2010-01-14, ver 0.6.2
 		Bugfix: problem with links
 
-	2010-01-13, ver 0.6.1, Milan Milosevic
+	2010-01-13, ver 0.6.1
 		Bugfix: problems with placement of shortcode content.
 		
-	2010-01-13, ver 0.6, Milan Milosevic
+	2010-01-13, ver 0.6
 		Added shortcode [mm-breaking-news] for displaying a list in a page/post
 
-	2009-12-25, ver 0.5.3, Milan Milosevic
+	2009-12-25, ver 0.5.3
 		Bugfix: Wordpress 2.9
 
-	2009-04-03, ver 0.5.2, Milan Milosevic
+	2009-04-03, ver 0.5.2
 		Bugfix: problem with CSS file
 
-	2009-03-6, ver 0.5,  Milan Milosevic
+	2009-03-6, ver 0.5
 		Uploaded to Wordpress.org
 
 

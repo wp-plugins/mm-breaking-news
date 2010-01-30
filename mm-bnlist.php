@@ -5,7 +5,7 @@ Plugin URI: http://www.mmilan.com/mm-breaking-news
 Description: Displays lists of posts from selected categories whereever you like. You can select how many different lists you want, sort posts by date or random, select which categories to include or exclude from specific list.
 Author: Milan Milosevic
 Author URI: http://www.mmilan.com/
-Version: 0.6.2
+Version: 0.6.3
 License: GPL v3 - http://www.gnu.org/licenses/
 
 Installation: You have to add <?php if (function_exists('mm_bnlist')) mm_bnlist() ?> to your theme file.
@@ -82,7 +82,7 @@ function mm_bnlist () {
 					else $myposts = get_posts("numberposts=$num&category=$catids");
 				foreach($myposts as $show_post) :
 					setup_postdata($show_post);
-					if ($show_date[$i] == "YES") $sh_date = the_date('M dS, Y', ' (', '', FALSE);
+					if ($show_date[$i] == "YES") $sh_date = " (".$show_post->post_date;
 						else $sh_date = '';
 					if ($show_comments[$i] == "YES") $no_com = "".$show_post->comment_count." comments)";
 						else $no_com = '';
@@ -145,7 +145,7 @@ function mm_bnlist_code ($attr) {
 				else $myposts = get_posts("numberposts=$num&category=$catids");
 			foreach($myposts as $show_post) :
 				setup_postdata($show_post);
-				if ($show_date[$i] == "YES") $sh_date = the_date('M dS, Y', ' (', '', FALSE);
+				if ($show_date[$i] == "YES") $sh_date = " (".$show_post->post_date;
 					else $sh_date = '';
 				if ($show_comments[$i] == "YES") $no_com = "".$show_post->comment_count." comments)";
 					else $no_com = '';
