@@ -1,10 +1,10 @@
 === Plugin Name ===
 Contributors: mmilan81
 Donate link: http://www.mmilan.com/
-Tags: latest, post, category, front, page, archive, news
-Requires at least: 2.6
-Tested up to: 2.9.1
-Stable tag: 0.6.3
+Tags: latest, post, category, front, page, archive, news, widget
+Requires at least: 2.8
+Tested up to: 2.9.2
+Stable tag: 0.6.5
 
 Displays lists of posts from selected categories. You can select how many different lists you want, sort posts by date or random.
 
@@ -14,12 +14,16 @@ This plugin gives you possibility to create bullet lists for your posts. You can
 
 Your posts can be randomized or sord by date. With title you can chose to show date or number of comments.
 
-Lists can be show whereber you want - above or below posts, in archive, or on single post or page. Also, you can place it in sidebar. You can choose to show lists only on first page or not.
+Lists can be show wherever you want - above or below posts, in archive, or on single post or page. Also, you can put a widget in a sidbar. You can choose to show lists only on first page or not.
 
 If you want to show a list on one page (or post) you can use a shortcode [mm-breaking-news] when you write and the whole bullet list will be displayed.
 
 Changelog:
 
+	2010-04-02, ver 0.6.5
+		Add: widget
+		Bugfix: multilanguage posts
+		
 	2010-01-30, ver 0.6.3
 		Bugfix: wrong post date
 		

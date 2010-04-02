@@ -5,12 +5,12 @@ Plugin URI: http://www.mmilan.com/mm-breaking-news
 Description: Displays lists of posts from selected categories whereever you like. You can select how many different lists you want, sort posts by date or random, select which categories to include or exclude from specific list.
 Author: Milan Milosevic
 Author URI: http://www.mmilan.com/
-Version: 0.6.3
+Version: 0.6.5
 License: GPL v3 - http://www.gnu.org/licenses/
 
 Installation: You have to add <?php if (function_exists('mm_bnlist')) mm_bnlist() ?> to your theme file.
 
-    Copyright 2009  Milan Milosevic  (email : mm@mmilan.com)
+    Copyright 2009-2010  Milan Milosevic  (email : mm@mmilan.com)
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -28,6 +28,120 @@ Installation: You have to add <?php if (function_exists('mm_bnlist')) mm_bnlist(
 
 */
 
+// Add Widget
+class WP_Widget_bnlist extends WP_Widget {
+
+	function WP_Widget_bnlist() {
+
+		parent::WP_Widget(false, $name = 'Breaking News');
+	}
+
+	function widget($args, $instance) {
+
+		global $wpdb;
+
+		extract($args);
+
+		$option_title = apply_filters('widget_title', empty($instance['title']) ? 'Breaking News' : $instance['title']);
+		$cat_in = $instance['cat_in'];
+		$cat_out = $instance['cat_out'];
+
+		// Create the widget
+		echo $before_widget;
+		echo $before_title . $option_title . $after_title;
+
+		// Widget code goes here
+		echo "<ul>";
+			$catid = Array();
+			if (!empty($cat_in)) foreach ($cat_in as $tmp) $catid[] = $tmp;
+			if (!empty($cat_out)) foreach ($cat_out as $tmp) $catid[] = -$tmp;
+			$catids = implode(',', $catid);
+
+			$num = $instance['bnlist_num'];
+			if ($instance['bnlist_rnd'] == "on") $myposts = get_posts("numberposts=$num&category=$catids&orderby=rand");
+				else $myposts = get_posts("numberposts=$num&category=$catids");
+			foreach($myposts as $show_post) :
+				setup_postdata($show_post);
+				if ($instance['bnlist_date'] == "on") $sh_date = " (".$show_post->post_date;
+					else $sh_date = '';
+				if ($instance['bnlist_com'] == "on") $no_com = "".$show_post->comment_count." comments)";
+					else $no_com = '';
+				if (($instance['bnlist_date'] == "on") and ($instance['bnlist_com'] == "on")) $sep = "; ";
+					else if ($instance['bnlist_date'] == "on") $sep = ")";
+						else $sep = " (";
+				if (($instance['bnlist_date'] != "on") and ($instance['bnlist_com'] != "on")) $sep = "";
+				print "<li class=\"widget_bnlist_li\"><a href=\"".get_permalink($show_post->ID)."\">".__($show_post->post_title)."</a><span class=\"date_com\">".$sh_date.$sep.$no_com."</span></li>";
+			endforeach;
+		echo "</ul>";
+		
+		if ($instance['bnlist_credits'] != "on")
+			echo '<div style="text-align: right; margin-top: 15px"><span style="font-size: 0.6em">Plugin by <a href="http://www.mmilan.com/" title="MM Breaking News - plugin for Wordpress">mmilan</a></span></div>';
+
+		echo $after_widget;
+	}
+
+	function update($new_instance, $old_instance) {
+
+		$instance = $new_instance;
+		
+		return $instance;
+	}
+
+	function form($instance) {
+
+		$instance = wp_parse_args((array)$instance, array('title' => 'Breaking News'));
+		$option_title = strip_tags($instance['title']);
+		$cat_in = $instance['cat_in'];
+		$cat_out = $instance['cat_out'];
+		
+		echo '<p>';
+		echo 	'<label for="' . $this->get_field_id('title') . '">Title:</label>';
+		echo 	'<input class="widefat" type="text" value="' . $option_title . '" id="' . $this->get_field_id('title') . '" name="' . $this->get_field_name('title') . '" />';
+		echo '</p>';
+?>
+		<p>
+			<?php $cats = get_categories(); ?>
+			<p><label for="<?php echo $this->get_field_name( 'cat_in' ); ?>">Include:</label>
+			<SELECT NAME="<?php echo $this->get_field_name( 'cat_in' ); ?>[]" MULTIPLE SIZE=3 style="height: auto">
+				<?php 	foreach ($cats as $cat) {
+						if (in_array($cat->cat_ID, $cat_in)) $selected = 'selected="selected"';
+							else $selected = '';
+						echo '<option value="'.$cat->cat_ID.'" '.$selected.'>'.$cat->cat_name."</option>";
+					}
+				?>
+			</SELECT></p>
+			
+			<p><label for="<?php echo $this->get_field_name( 'cat_out' ); ?>">Exclude:</label>
+			<SELECT NAME="<?php echo $this->get_field_name( 'cat_out' ); ?>[]" MULTIPLE SIZE=3 style="height: auto">
+				<?php 	foreach ($cats as $cat) {
+						if (in_array($cat->cat_ID, $cat_out)) $selected = 'selected="selected"';
+							else $selected = '';
+						echo '<option value="'.$cat->cat_ID.'" '.$selected.'>'.$cat->cat_name."</option>";
+					}
+				?>
+			</SELECT></p>
+			
+			<?php $instance['bnlist_num'] = 5; ?>
+
+			<p><input class="checkbox" type="checkbox" <?php checked( (bool)  $instance['bnlist_com'], true ); ?> id="<?php echo $this->get_field_id( 'bnlist_com' ); ?>" name="<?php echo $this->get_field_name( 'bnlist_com' ); ?>" />
+			<label for="<?php echo $this->get_field_id( 'bnlist_com' ); ?>">Show number of comments</label></p>
+
+			<p><input class="checkbox" type="checkbox" <?php checked( (bool)  $instance['bnlist_date'], true ); ?> id="<?php echo $this->get_field_id( 'bnlist_date' ); ?>" name="<?php echo $this->get_field_name( 'bnlist_date' ); ?>" />
+			<label for="<?php echo $this->get_field_id( 'bnlist_date' ); ?>">Show post date</label></p>
+			
+			<p><input class="checkbox" type="checkbox" <?php checked( (bool)  $instance['bnlist_rnd'], true ); ?> id="<?php echo $this->get_field_id( 'bnlist_rnd' ); ?>" name="<?php echo $this->get_field_name( 'bnlist_rnd' ); ?>" />
+			<label for="<?php echo $this->get_field_id( 'bnlist_rnd' ); ?>">Randomize posts</label></p>
+			
+			<p><input class="checkbox" type="checkbox" <?php checked( (bool)  $instance['bnlist_credits'], true ); ?> id="<?php echo $this->get_field_id( 'bnlist_credits' ); ?>" name="<?php echo $this->get_field_name( 'bnlist_credits' ); ?>" />
+			<label for="<?php echo $this->get_field_id( 'bnlist_credits' ); ?>">Don't show credits</label></p>
+		</p>
+<?php	}
+}
+
+add_action('widgets_init', create_function('', 'return register_widget("WP_Widget_bnlist");'));
+
+
+// Add custom CSS style for box
 function mm_bnlist_css() {
 
 	$pluginURL = 'wp-content/plugins/';
@@ -90,7 +204,7 @@ function mm_bnlist () {
 						else if ($show_date[$i] == "YES") $sep = ")";
 							else $sep = " (";
 					if (($show_date[$i] != "YES") and ($show_comments[$i] != "YES")) $sep = "";
-					print "<li><a href=\"".get_permalink($show_post->ID)."\">".$show_post->post_title."</a><span class=\"date_com\">".$sh_date.$sep.$no_com."</span></li>";
+					print "<li><a href=\"".get_permalink($show_post->ID)."\">".__($show_post->post_title)."</a><span class=\"date_com\">".$sh_date.$sep.$no_com."</span></li>";
 				endforeach;
 			echo "</ul>";
 		}
@@ -153,7 +267,7 @@ function mm_bnlist_code ($attr) {
 					else if ($show_date[$i] == "YES") $sep = ")";
 						else $sep = " (";
 				if (($show_date[$i] != "YES") and ($show_comments[$i] != "YES")) $sep = "";
-				$mm_echo .= "<li><a href=\"".get_permalink($show_post->ID)."\">".$show_post->post_title."</a><span class=\"date_com\">".$sh_date.$sep.$no_com."</span></li>";
+				$mm_echo .= "<li><a href=\"".get_permalink($show_post->ID)."\">".__($show_post->post_title)."</a><span class=\"date_com\">".$sh_date.$sep.$no_com."</span></li>";
 			endforeach;
 		$mm_echo .= "</ul>";
 	}
