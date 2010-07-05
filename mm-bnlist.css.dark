@@ -2,7 +2,7 @@
 Plugin URI: http://www.mmilan.com/mm-breaking-news
 Description: Displays lists of posts from selected categories whereever you like. You can select how many different lists you want, sort posts by date or random, select which categories to include or exclude from specific list.
 Author: Milan Milosevic
-Version: 0.6.5
+Version: 0.6.1
 Author URI: http://www.mmilan.com
 
 This is alternativ CSS file. If you wish to use it rename it to mm-bnlist.css (and owerite original). This one is usefull if you have blak or dark background.
@@ -43,8 +43,4 @@ This is alternativ CSS file. If you wish to use it rename it to mm-bnlist.css (a
 	font-size: 0.5em;
 	margin: 0;
 	padding: 0;
-}
-
-.widget_bnlist_li {
-	font-size: 0.9em;
 }
