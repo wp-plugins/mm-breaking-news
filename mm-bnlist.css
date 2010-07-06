@@ -1,0 +1,63 @@
+/*CSS Stylesheet for MM-Breaking News
+Plugin URI: http://www.svetnauke.org/mm-breaking-news
+Description: Displays lists of posts from selected categories whereever you like. You can select how many different lists you want, sort posts by date or random, select which categories to include or exclude from specific list.
+Author: Milan Milosevic
+Version: 0.7
+Author URI: http://www.svetnauke.org
+*/
+
+.mm_credits {
+	text-align: right;
+	font-size: 0.75em;
+	margin: 10px 0 0;
+	padding: 0;
+	clear: both;
+}
+
+.mm_bnlist_date_com {
+	color: #777;
+	font-style: italic;
+}
+
+#mm_bnlist_main, #mm_bnlist_multi {
+	margin-top: 2em auto 0;
+	border: 1px solid #aaa;
+	background: #eee;
+	padding: 0.5em 2em;
+	font-size: 0.9em;
+	
+}
+
+#mm_bnlist_main .mm_bnlist_title, #mm_bnlist_multi .mm_bnlist_title {
+	font-size: 1.2em;
+	font-weight: bold;
+}
+
+#mm_bnlist_main ul, #mm_bnlist_multi ul {
+	margin: 0;
+	padding: 0.3em 0;
+	padding-left: 3em;
+}
+
+#mm_bnlist_main a, #mm_bnlist_multi a {
+	color: blue;
+}
+
+#mm_bnlist_main a:hover, #mm_bnlist_multi a:hover {
+	color: green;
+	text-decoration: none;
+}
+
+#mm_bnlist_multi_1 {
+	width: 50%;
+	float: left;
+}
+
+#mm_bnlist_multi_2 {
+	width: 50%;
+	float: left;
+}
+
+#mm_bnlist_multi_wrap {
+	width: 100%;
+}
