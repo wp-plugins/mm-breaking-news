@@ -2,7 +2,7 @@
 Plugin URI: http://www.svetnauke.org/mm-breaking-news
 Description: Displays lists of posts from selected categories whereever you like. You can select how many different lists you want, sort posts by date or random, select which categories to include or exclude from specific list.
 Author: Milan Milosevic
-Version: 0.7
+Version: 0.7.1
 Author URI: http://www.svetnauke.org
 */
 
@@ -11,7 +11,6 @@ Author URI: http://www.svetnauke.org
 	font-size: 0.75em;
 	margin: 10px 0 0;
 	padding: 0;
-	clear: both;
 }
 
 .mm_bnlist_date_com {
@@ -19,13 +18,16 @@ Author URI: http://www.svetnauke.org
 	font-style: italic;
 }
 
+.mm_bnlist_li {
+	font-size: 0.9em;
+}
+
 #mm_bnlist_main, #mm_bnlist_multi {
 	margin-top: 2em auto 0;
 	border: 1px solid #aaa;
 	background: #eee;
 	padding: 0.5em 2em;
-	font-size: 0.9em;
-	
+	font-size: 0.9em;	
 }
 
 #mm_bnlist_main .mm_bnlist_title, #mm_bnlist_multi .mm_bnlist_title {
