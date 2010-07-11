@@ -4,7 +4,7 @@ Donate link: http://www.svetnauke.org/
 Tags: latest, post, category, front, page, archive, news, widget
 Requires at least: 2.8
 Tested up to: 3.0
-Stable tag: 0.7
+Stable tag: 0.7.1
 
 Displays lists of posts from selected categories. You can select how many different lists you want, sort posts by date or random.
 
@@ -19,6 +19,9 @@ Lists can be show wherever you want - above or below posts, in archive, or on si
 If you want to show a list on one page (or post) you can use a shortcode [mm-breaking-news] when you write and the whole bullet list will be displayed.
 
 Changelog:
+
+	2010-07-11, ver 0.7.1
+		Bugfix: widget style and settings
 
 	2010-07-06, ver 0.7
 		Add: display lists of posts in multiple columns

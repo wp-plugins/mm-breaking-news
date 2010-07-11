@@ -5,7 +5,7 @@ Plugin URI: http://www.svetnauke.org/mm-breaking-news
 Description: Displays lists of posts from selected categories whereever you like. You can select how many different lists you want, sort posts by date or random, select which categories to include or exclude from specific list.
 Author: Milan Milosevic
 Author URI: http://www.svetnauke.org/
-Version: 0.7
+Version: 0.7.1
 License: GPL v3 - http://www.gnu.org/licenses/
 
 Installation: You have to add <?php if (function_exists('mm_bnlist')) mm_bnlist() ?> to your theme file.
@@ -108,7 +108,7 @@ class WP_Widget_bnlist extends WP_Widget {
 		if ($instance['bnlist_rnd'] == 'on') $bnlist_rnd = "YES"; else $bnlist_rnd = "NO";
 		if ($instance['bnlist_date'] == 'on') $bnlist_date = "YES"; else $bnlist_date = "NO";
 		if ($instance['bnlist_com'] == 'on') $bnlist_com = "YES"; else $bnlist_com = "NO";
-		if ($instance['bnlist_credits'] == 'on') $bnlist_credits = "YES"; else $bnlist_credits = "NO";
+		if ($instance['bnlist_credits'] == 'on') $bnlist_credits = "NO"; else $bnlist_credits = "YES";
 
 		// Create the widget
 		echo $before_widget;
