@@ -5,10 +5,10 @@ Plugin URI: http://www.svetnauke.org/mm-breaking-news
 Description: Displays lists of posts from selected categories whereever you like. You can select how many different lists you want, sort posts by date or random, select which categories to include or exclude from specific list.
 Author: Milan Milosevic
 Author URI: http://www.svetnauke.org/
-Version: 0.7.1
+Version: 0.7.5
 License: GPL v3 - http://www.gnu.org/licenses/
 
-Installation: You have to add <?php if (function_exists('mm_bnlist')) mm_bnlist() ?> to your theme file.
+Installation: You have to add <?php if (function_exists('mm_bnlist')) mm_bnlist() ?> or <?php if (function_exists('mm_bnlist_multi')) mm_bnlist_multi(2) ?> to your theme file. Also you can use widget or shortcode.
 
     Copyright 2009-2010  Milan Milosevic  (email : mm@mmilan.com)
 
@@ -29,7 +29,7 @@ Installation: You have to add <?php if (function_exists('mm_bnlist')) mm_bnlist(
 */
 
 // Display function
-function mm_bnlist_print ($case, $title, $cats_in, $cats_out, $num, $show_rand, $show_date, $show_comments) {
+function mm_bnlist_print ($case, $title, $cats_in, $cats_out, $num, $show_rand, $show_date, $show_comments, $css_class = "") {
 
 	switch ($case) {
 		case 'mm_bnlist_main':
@@ -44,8 +44,9 @@ function mm_bnlist_print ($case, $title, $cats_in, $cats_out, $num, $show_rand, 
 		default:
  			$mm_string = '';
 	}
+	
+	if (strlen($css_class) == 0) $mm_string .= '<ul>'; else $mm_string .= '<ul class="'.$css_class.'">';
 
-	$mm_string .= "<ul>";
 		$catid = Array();
 		if (!empty($cats_in)) foreach ($cats_in as $tmp) $catid[] = $tmp;
 		if (!empty($cats_out)) foreach ($cats_out as $tmp) $catid[] = -$tmp;
@@ -66,17 +67,20 @@ function mm_bnlist_print ($case, $title, $cats_in, $cats_out, $num, $show_rand, 
 					else $no_com .= " comments";
 			}
 			
+			$show_title = __($show_post->post_title);
+//			$show_title = strtoupper(__($show_post->post_title));
+			
 			if (($show_date == "YES") and ($show_comments != "YES")) 
-				$mm_string .= '<li class="mm_bnlist_li"><a href="'.get_permalink($show_post->ID).'">'.__($show_post->post_title).'</a><span class="mm_bnlist_date_com"> ('.$sh_date.')</span></li>';
+				$mm_string .= '<li class="mm_bnlist_li"><a href="'.get_permalink($show_post->ID).'">'.$show_title.'</a><span class="mm_bnlist_date_com"> ('.$sh_date.')</span></li>';
 
 			if (($show_date != "YES") and ($show_comments == "YES")) 
-				$mm_string .= '<li class="mm_bnlist_li"><a href="'.get_permalink($show_post->ID).'">'.__($show_post->post_title).'</a><span class="mm_bnlist_date_com"> ('.$no_com.')</span></li>';
+				$mm_string .= '<li class="mm_bnlist_li"><a href="'.get_permalink($show_post->ID).'">'.$show_title.'</a><span class="mm_bnlist_date_com"> ('.$no_com.')</span></li>';
 
 			if (($show_date == "YES") and ($show_comments == "YES"))
-				$mm_string .= '<li class="mm_bnlist_li"><a href="'.get_permalink($show_post->ID).'">'.__($show_post->post_title).'</a><span class="mm_bnlist_date_com"> ('.$sh_date.', '.$no_com.')</span></li>';
+				$mm_string .= '<li class="mm_bnlist_li"><a href="'.get_permalink($show_post->ID).'">'.$show_title.'</a><span class="mm_bnlist_date_com"> ('.$sh_date.', '.$no_com.')</span></li>';
 
 			if (($show_date != "YES") and ($show_comments != "YES"))
-				$mm_string .= '<li class="mm_bnlist_li"><a href="'.get_permalink($show_post->ID).'">'.__($show_post->post_title).'</a></li>';
+				$mm_string .= '<li class="mm_bnlist_li"><a href="'.get_permalink($show_post->ID).'">'.$show_title.'</a></li>';
 
 		endforeach;
 	$mm_string .= "</ul>";
@@ -109,13 +113,13 @@ class WP_Widget_bnlist extends WP_Widget {
 		if ($instance['bnlist_date'] == 'on') $bnlist_date = "YES"; else $bnlist_date = "NO";
 		if ($instance['bnlist_com'] == 'on') $bnlist_com = "YES"; else $bnlist_com = "NO";
 		if ($instance['bnlist_credits'] == 'on') $bnlist_credits = "NO"; else $bnlist_credits = "YES";
-
+		
 		// Create the widget
 		echo $before_widget;
 		echo $before_title . $option_title . $after_title;
-
+	
 		// Widget code goes here
-		echo mm_bnlist_print ('mm_bnlist_widget', 'no title', $instance['cat_in'], $instance['cat_out'], $instance['bnlist_num'], $bnlist_rnd, $bnlist_date, $bnlist_com);
+		echo mm_bnlist_print ('mm_bnlist_widget', 'no title', $instance['cat_in'], $instance['cat_out'], $instance['bnlist_num'], $bnlist_rnd, $bnlist_date, $bnlist_com, $instance['bnlist_css_id']);
 		echo mm_bnlist_credits('mm_bnlist_widget', $bnlist_credits);
 
 		echo $after_widget;
@@ -134,6 +138,8 @@ class WP_Widget_bnlist extends WP_Widget {
 		$option_title = strip_tags($instance['title']);
 		$cat_in = $instance['cat_in'];
 		$cat_out = $instance['cat_out'];
+		$option_num = $instance['bnlist_num'];
+		$option_css_id = $instance['bnlist_css_id'];
 		
 		echo '<p>';
 		echo 	'<label for="' . $this->get_field_id('title') . '">Title:</label>';
@@ -162,8 +168,20 @@ class WP_Widget_bnlist extends WP_Widget {
 				?>
 			</SELECT></p>
 			
-			<?php $instance['bnlist_num'] = 5; ?>
+			<?php 
+			echo '<p>';
+			echo '	<label for="' . $this->get_field_id('bnlist_num') . '">Number of posts:</label>';
+			echo '	<input class="widefat" type="text" value="' . $option_num . '" id="' . $this->get_field_id('bnlist_num') . '" name="' . $this->get_field_name('bnlist_num') . '" />';
+			echo '</p>';
+			?>
 
+			<?php 
+			echo '<p>';
+			echo '	<label for="' . $this->get_field_id('bnlist_css_id') . '">Custom CSS class:</label>';
+			echo '	<input class="widefat" type="text" value="' . $option_css_id . '" id="' . $this->get_field_id('bnlist_css_id') . '" name="' . $this->get_field_name('bnlist_css_id') . '" />';
+			echo '</p>';
+			?>
+			
 			<p><input class="checkbox" type="checkbox" <?php checked( (bool)  $instance['bnlist_com'], true ); ?> id="<?php echo $this->get_field_id( 'bnlist_com' ); ?>" name="<?php echo $this->get_field_name( 'bnlist_com' ); ?>" />
 			<label for="<?php echo $this->get_field_id( 'bnlist_com' ); ?>">Show number of comments</label></p>
 
