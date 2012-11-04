@@ -3,7 +3,7 @@ Contributors: mmilan81
 Tags: latest, post, category, front, page, archive, news, widget
 Requires at least: 2.8
 Tested up to: 3.4.2
-Stable tag: 0.7.7
+Stable tag: 0.7.8
 
 Displays lists of posts from selected categories. You can select how many different lists you want, sort posts by date or random.
 
@@ -17,7 +17,10 @@ Lists can be show wherever you want - above or below posts, in archive, or on si
 
 You can modify your themplate to display list of post, add <?php if (function_exists('mm_bnlist')) mm_bnlist() ?> for single column or <?php if (function_exists('mm_bnlist_multi')) mm_bnlist_multi(N) ?> for multiple columns. If you want to show a list on one page (or post) you can use a shortcode [mm-breaking-news] when you write and the whole bullet list will be displayed. 
 
-Changelog:
+== Changelog ==
+
+	2012-11-04, ver 0.7.8
+		Add: change time format and customize time display using CSS
 
 	2012-11-04, ver 0.7.7
 		Add: you can display post time instead of bullet list

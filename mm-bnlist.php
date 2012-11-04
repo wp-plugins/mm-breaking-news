@@ -5,7 +5,7 @@ Plugin URI: http://www.svetnauke.org/mm-breaking-news
 Description: Displays lists of posts from selected categories whereever you like. You can select how many different lists you want, sort posts by date or random, select which categories to include or exclude from specific list.
 Author: Milan Milosevic
 Author URI: http://www.svetnauke.org/
-Version: 0.7.7
+Version: 0.7.8
 License: GPL v3 - http://www.gnu.org/licenses/
 
 Installation: You have to add <?php if (function_exists('mm_bnlist')) mm_bnlist() ?> or <?php if (function_exists('mm_bnlist_multi')) mm_bnlist_multi(2) ?> to your theme file. Also you can use widget or shortcode.
@@ -61,6 +61,7 @@ function mm_bnlist_print ($case, $title, $cats_in, $cats_out, $num, $show_rand, 
 			setup_postdata($show_post);
 			if ($show_date == "YES") {
 				$mm_time_format = get_option( 'mm_bnlist_time_format');
+				if (empty($mm_time_format)) $mm_time_format = 'M j, Y';
 				$sh_date = mysql2date($mm_time_format, $show_post->post_date);
 			}
 			if ($show_comments == "YES") {
@@ -70,11 +71,12 @@ function mm_bnlist_print ($case, $title, $cats_in, $cats_out, $num, $show_rand, 
 			}
 			
 			$show_title = __($show_post->post_title);
-//			$show_title = strtoupper(__($show_post->post_title));
 
-			if ($bnlist_time == "YES")
-				$print_time = '('.get_post_time('h:ia', false, $show_post->ID).') ';
-			else $print_time = '';
+			if ($bnlist_time == "YES") {
+				$mm_btime_format = get_option( 'mm_bnlist_btime_format');
+				if (empty($mm_btime_format)) $mm_btime_format = 'H:i';
+				$print_time = '<span class="btime">('.mysql2date($mm_btime_format, $show_post->post_date).')</span> ';
+			} else $print_time = '';
 			
 			if (($show_date == "YES") and ($show_comments != "YES")) 
 				$mm_string .= '<li class="mm_bnlist_li">'.$print_time.'<a href="'.get_permalink($show_post->ID).'">'.$show_title.'</a><span class="mm_bnlist_date_com"> ('.$sh_date.')</span></li>';
@@ -327,7 +329,8 @@ function mm_bnlist_opt() {
 		'out' => 'mm_bnlist_out',
 		'num' => 'mm_bnlist_num',
 		'title' => 'mm_bnlist_title',
-		'time_format' => 'mm_bnlist_time_format'
+		'time_format' => 'mm_bnlist_time_format',
+		'btime_format' => 'mm_bnlist_btime_format'
 	);
 	$hidden_field_name = 'mm_bnlist_submit';
 
@@ -339,9 +342,11 @@ function mm_bnlist_opt() {
 		'num' => get_option( $opt_name['num'] ),
 		'title' =>  get_option( $opt_name['title'] ),
 		'time_format' =>  get_option( $opt_name['time_format'] ),
+		'btime_format' =>  get_option( $opt_name['btime_format'] )
 	);
 	if ($opt_val['n'] < 1) $opt_val['n'] = 1;
 	if (empty($opt_val['time_format'])) $opt_val['time_format'] = 'M j, Y';
+	if (empty($opt_val['btime_format'])) $opt_val['btime_format'] = 'H:i';
 	$only_front = get_option('mm_bnlist_front');
 	$show_comments = unserialize(get_option('mm_bnlist_comments'));
 	$show_date = unserialize(get_option('mm_bnlist_date'));
@@ -355,7 +360,8 @@ function mm_bnlist_opt() {
 	// Read their posted value
         	$opt_val = array(
 			'n' => $_POST[ $opt_name['n'] ],
-			'time_format' => $_POST[ $opt_name['time_format'] ]
+			'time_format' => $_POST[ $opt_name['time_format'] ],
+			'btime_format' => $_POST[ $opt_name['btime_format'] ]
 		);
 		
 // Create array for each field
@@ -379,6 +385,7 @@ function mm_bnlist_opt() {
 	update_option( $opt_name['num'], $opt_val['num'] );
 	update_option( $opt_name['title'], $opt_val['title'] );
 	update_option( $opt_name['time_format'], $opt_val['time_format'] );
+	update_option( $opt_name['btime_format'], $opt_val['btime_format'] );
 	update_option('mm_bnlist_front', $only_front);
 	update_option('mm_bnlist_comments', serialize($show_comments));
 	update_option('mm_bnlist_date', serialize($show_date));
@@ -418,10 +425,15 @@ function mm_bnlist_opt() {
 			</tr>
 
 			<tr valign="top">
-				<th scope="row">Date/time format:</th>
+				<th scope="row">Date format:</th>
 				<td><input type="text" name="<?php echo $opt_name['time_format']; ?>" value="<?php echo $opt_val['time_format']; ?>" /> 
 				<br/>Documentation on <a href="http://codex.wordpress.org/Formatting_Date_and_Time">Formating Date and Time</a></td>
 
+				<th scope="row">Time format:</th>
+				<td><input type="text" name="<?php echo $opt_name['btime_format']; ?>" value="<?php echo $opt_val['btime_format']; ?>" />
+			</tr>
+
+			<tr valign="top">
 				<th scope="row">Show "Plugin by <a href="http://www.svetnauke.org">Svet nauke</a>"</th>
 				<td><SELECT name="mm_bnlist_credits" />
 					<?php if ($show_credits == "YES") $opt_select = 'selected="selected"'; else $opt_select =""; ?>
@@ -431,8 +443,8 @@ function mm_bnlist_opt() {
 				</td>
 			</tr>
 
-<?php $cats = get_categories(); ?>
-<?php for ( $i = 0; $i < $opt_val['n']; $i+=1 ) { ?>
+<?php 	$cats = get_categories(); ?>
+<?php 	for ( $i = 0; $i < $opt_val['n']; $i+=1 ) { ?>
 			<tr valign="top" style="border-top: 1px solid #aaa">
 				<th scope="row">Title <?php echo $i+1 ?>:</th>
 				<td><input type="text" name="<?php echo $opt_name['title'] ?>[]" value="<?php echo $opt_tmp['title'][$i]; ?>" /></td>
