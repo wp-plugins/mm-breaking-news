@@ -1,10 +1,9 @@
 === Plugin Name ===
 Contributors: mmilan81
-Donate link: http://www.svetnauke.org/
 Tags: latest, post, category, front, page, archive, news, widget
 Requires at least: 2.8
 Tested up to: 3.4.2
-Stable tag: 0.7.6
+Stable tag: 0.7.7
 
 Displays lists of posts from selected categories. You can select how many different lists you want, sort posts by date or random.
 
@@ -16,9 +15,13 @@ Your posts can be randomized or sord by date. With title you can chose to show d
 
 Lists can be show wherever you want - above or below posts, in archive, or on single post or page. Also, you can put a widget in a sidbar. You can choose to show lists only on first page or not.
 
-You can modify your themplate to display list of post, add <?php if (function_exists('mm_bnlist')) mm_bnlist() ?> for single column or <?php if (function_exists('mm_bnlist_multi')) mm_bnlist_multi(2) ?> for multiple columns. If you want to show a list on one page (or post) you can use a shortcode [mm-breaking-news] when you write and the whole bullet list will be displayed. 
+You can modify your themplate to display list of post, add <?php if (function_exists('mm_bnlist')) mm_bnlist() ?> for single column or <?php if (function_exists('mm_bnlist_multi')) mm_bnlist_multi(N) ?> for multiple columns. If you want to show a list on one page (or post) you can use a shortcode [mm-breaking-news] when you write and the whole bullet list will be displayed. 
 
 Changelog:
+
+	2012-11-04, ver 0.7.7
+		Add: you can display post time instead of bullet list
+		Bugfix: too many warnings in error log
 
 	2012-10-09, ver 0.7.6
 		Bugfix & version compatibility
@@ -67,7 +70,7 @@ Changelog:
 
 1. Upload plugin to the `/wp-content/plugins/` directory
 2. Activate the plugin through the 'Plugins' menu in WordPress
-3. Place `<?php if (function_exists('mm_bnlist')) mm_bnlist() ?>` in your templates. If you would like to show posts in multiple columns use <?php if (function_exists('mm_bnlist_multi')) mm_bnlist_multi(2) ?> instead (number 2 is the number of columns; it can be anything you want).
+3. Place `<?php if (function_exists('mm_bnlist')) mm_bnlist() ?>` in your templates. If you would like to show posts in multiple columns use `<?php if (function_exists('mm_bnlist_multi')) mm_bnlist_multi(N) ?>` instead (where N is the number of columns).
 4. Edit CSS file in plugin folder. You must edit mm-bnlist.css if you want to display more than two columns.
 5. In WordPress menu go to 'Setting / MM Breaking News' and configure plugin
 
